@@ -1,17 +1,22 @@
 import { Link } from 'react-router-dom'
 import { Paths } from 'paths'
 
+import 'styles/Header.scss'
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+
 export default function Header() {
   return (
-    <header>
-      <div className="header-div">
-	<h1 className="title"><Link to={Paths.MAIN}>My React App</Link></h1>
-	<nav className="navbar">
-	  <ul className="nav-list">
-	    <li className="nav-item"><Link to={Paths.TODOS}>todos</Link></li>
-	  </ul>
-	</nav>
-      </div>
-    </header>
+    <Navbar bg="dark" data-bs-theme="dark">
+      <Container>
+	<Navbar.Brand href="#home">Jira clone</Navbar.Brand>
+	<Nav className="me-auto">
+	  <Link className="nav-link" to={Paths.MAIN}>Main</Link>
+	  <Link className="nav-link" to={Paths.TODOS}>Todos</Link>
+	  <Link className="nav-link" to={Paths.SPRINT}>Active sprint</Link>
+	</Nav>
+      </Container>
+    </Navbar>
   )
 }

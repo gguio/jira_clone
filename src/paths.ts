@@ -1,5 +1,7 @@
 export const Paths = {
     MAIN: "/",
-    TODOS: "todos"
+    TODOS: "todos",
+    SPRINT: "sprint",
+    STAT: "statistics/:assignee"
 }
 

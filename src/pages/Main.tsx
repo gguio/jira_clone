@@ -1,30 +1,39 @@
 import { store, ResetTasks } from 'store'
-import { useSnapshot } from 'valtio'
-import { useState, useEffect, memo } from 'react'
 
-const Test = memo(() => {
-  const task = useSnapshot(store.tasks[0])
-  return(
-    <div>
-      {task.id}
-    </div>
-  )
-})
+import { useSnapshot } from 'valtio'
+
+import "styles/Main.scss"
+import ListGroup from 'react-bootstrap/ListGroup'
+
+import BacklogItem from 'components/BacklogItem.tsx'
+
 
 export default function Main() {
-  const task = useSnapshot(store.tasks[0])
-  const HandleInput = (e: React.FormEvent<HTMLInputElement>) => {
-    if (!e.currentTarget) return null
-    store.tasks[0].id = e.currentTarget.value
-  }
-
+  const tasks = useSnapshot(store.tasks)
   return(
-    <div>
-      <h1>This is a main page!</h1>
-      <h2>{task.title}</h2>
-      <Test />
-      <input onChange={HandleInput} />
+    <div className="container">
       <button onClick={ResetTasks}>Reset</button>
+      <div className="sprint">
+        <h2 className="part-header">Sprint</h2>
+        <ListGroup>
+          {tasks.filter((task)=>task.inSprint).map((task, index) => {
+            return (
+              <ListGroup.Item key={index}> <BacklogItem id={task.id} /></ListGroup.Item>
+            )
+          })}
+        </ListGroup>
+      </div>
+
+      <div className="backlog">
+        <h2 className="part-header">Backlog</h2>
+        <ListGroup>
+          {tasks.map((task, index) => {
+            return (
+              <ListGroup.Item key={index}> <BacklogItem id={task.id} /></ListGroup.Item>
+            )
+          })}
+        </ListGroup>
+      </div>
     </div>
   )
 }

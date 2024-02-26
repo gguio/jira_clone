@@ -1,53 +1,75 @@
 import { proxy, subscribe } from 'valtio'
 
-type Task = {
-				id: string,
-				title: string,
-				subtitle: string,
-				stage: string,
-				author: string,
-				assignee: string,
-				time: number,
-				desc: string,
-				comment?: string,
-				watchers?: string[],
-				tillEndOfSprint?: Date
+export type Task = {
+  id: string,
+  title: string,
+  subtitle: string,
+  inSprint: boolean,
+  stage: string,
+  author: string,
+  assignee: string,
+  time: number,
+  desc: string,
+  points?: number,
+  comment?: string,
+  watchers?: string[],
+  tillEndOfSprint?: Date
 }
 
 const persistedStore = localStorage.getItem('store')
 
 export const store = proxy<{
-				tasks: Task[]
+  tasks: Task[]
 }>(persistedStore ? JSON.parse(persistedStore) : {
-	tasks: [
-		{
-			id: "AA-0000",
-			title: "This is a test task",
-			subtitle: "Subtitle",
-			stage: "todo",
-			author: "Me",
-			assignee: "Other",
-			time: 8,
-			desc: "this is need to be done"
-		}
-	]
+  tasks: [
+    {
+      id: "AA-0000",
+      title: "This is a test task",
+      subtitle: "Subtitle",
+      stage: "todo",
+      inSprint: false,
+      author: "Me",
+      assignee: "Other",
+      time: 8,
+      desc: "this is need to be done"
+    }
+  ]
 })
 
 subscribe(store, () => {
-	localStorage.setItem('store', JSON.stringify(store))
+  localStorage.setItem('store', JSON.stringify(store))
 })
 
 export const ResetTasks = () => {
-	store.tasks = [
-		{
-			id: "AA-0000",
-			title: "This is a test task",
-			subtitle: "Subtitle",
-			stage: "todo",
-			author: "Me",
-			assignee: "Other",
-			time: 8,
-			desc: "this is need to be done"
-		}
-	]
+  store.tasks[0] = {
+      id: "AA-0000",
+      title: "This is a test task",
+      subtitle: "Subtitle",
+      stage: "todo",
+      inSprint: true,
+      author: "Me",
+      assignee: "Other",
+      time: 8,
+      desc: "this is need to be done",
+      points: 10
+    }
+  store.tasks[1] = {
+      id: "AA-0001",
+      title: "Another task",
+      subtitle: "Subtitle",
+      stage: "todo",
+      inSprint: true,
+      author: "Me",
+      assignee: "John",
+      time: 8,
+      desc: "this is need to be done",
+      points: 10
+    }
+  
+}
+
+export const changeTaskStage = (id: string, stage: string) => {
+  store.tasks.forEach((task) => {
+    if (task.id === id) task.stage = stage
+  })
 }
