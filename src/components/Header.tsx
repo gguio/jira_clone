@@ -13,7 +13,7 @@ export default function Header() {
 	<Navbar.Brand href="#home">Jira clone</Navbar.Brand>
 	<Nav className="me-auto">
 	  <Link className="nav-link" to={Paths.MAIN}>Main</Link>
-	  <Link className="nav-link" to={Paths.TODOS}>Todos</Link>
+	  <Link className="nav-link" to={Paths.ADMIN}>Admin</Link>
 	  <Link className="nav-link" to={Paths.SPRINT}>Active sprint</Link>
 	</Nav>
       </Container>

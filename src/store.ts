@@ -1,5 +1,21 @@
 import { proxy, subscribe } from 'valtio'
 
+
+type Sprint = {
+  isActive: boolean,
+  name: string,
+  goal: string,
+  duration: string,
+  begin: Date,
+  end: Date
+}
+
+type TeamMember = {
+  name: string,
+  post: string,
+  department: string
+}
+
 export type Task = {
   id: string,
   title: string,
@@ -19,7 +35,9 @@ export type Task = {
 const persistedStore = localStorage.getItem('store')
 
 export const store = proxy<{
-  tasks: Task[]
+  tasks: Task[],
+  members: TeamMember[],
+  sprint: Sprint[]
 }>(persistedStore ? JSON.parse(persistedStore) : {
   tasks: [
     {
@@ -33,7 +51,9 @@ export const store = proxy<{
       time: 8,
       desc: "this is need to be done"
     }
-  ]
+  ],
+  members: [],
+  sprint: []
 })
 
 subscribe(store, () => {
@@ -65,7 +85,8 @@ export const ResetTasks = () => {
       desc: "this is need to be done",
       points: 10
     }
-  
+  store.members = []
+  store.sprint = []
 }
 
 export const changeTaskStage = (id: string, stage: string) => {

@@ -7,7 +7,7 @@ import { useSnapshot } from 'valtio'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-import { getTaskIndex } from 'utils/getTaskIndex.ts'
+import { getTaskIndex } from 'utils/storeUtils.ts'
 
 
 export default function BacklogItem({id}: {id: string }) {

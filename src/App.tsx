@@ -11,12 +11,12 @@ import Layout from 'components/Layout.tsx'
 import { Paths } from 'paths'
 
 const Main = lazy(() => import("pages/Main.tsx"))
-const Todos = lazy(() => import("pages/Todos.tsx"))
+const Admin = lazy(() => import("pages/Admin.tsx"))
 const Stats = lazy(() => import("pages/Stats.tsx"))
 const Sprint = lazy(() => import("pages/Sprint.tsx"))
 const routes = [
     { path: Paths.MAIN, element: <Main /> },
-    { path: Paths.TODOS, element: <Todos /> },
+    { path: Paths.ADMIN, element: <Admin /> },
     { path: Paths.STAT, element: <Stats /> },
     { path: Paths.SPRINT, element: <Sprint /> },
 ]

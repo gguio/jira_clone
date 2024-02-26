@@ -1,6 +1,6 @@
 export const Paths = {
     MAIN: "/",
-    TODOS: "todos",
+    ADMIN: "todos",
     SPRINT: "sprint",
     STAT: "statistics/:assignee"
 }
