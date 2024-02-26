@@ -6,7 +6,8 @@
       "styles/*": ["./styles/*"],
       "pages/*": ["./pages/*"],
       "utils/*": ["./utils/*"],
-      "store": ["./store.ts"]
+      "store": ["./store.ts"],
+      "paths": ["./paths.ts"]
     },
     "strict": true,
     "esModuleInterop": true,
