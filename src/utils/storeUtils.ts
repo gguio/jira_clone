@@ -2,13 +2,10 @@ import { store } from 'store'
 
 
 export const getTaskIndex = (id: string) => {
-  let taskIndex = null
-  store.tasks.forEach((task, index) => {
-    if (task.id===id) {
-      taskIndex = index
-    } 
-  })
-  return taskIndex
+  for (let i=0; i<store.tasks.length; i+=1) {
+    if (store.tasks[i].id === id) return i
+  }
+  return null
 }
 
 export const generateTaskId = () => {

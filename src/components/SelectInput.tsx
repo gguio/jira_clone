@@ -1,5 +1,7 @@
 import { useField, FormikProps, FieldHookConfig } from 'formik'
 
+import 'styles/FormStyles.scss'
+
 import { useSnapshot } from 'valtio'
 import { store } from 'store'
 

@@ -17,21 +17,9 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import { useSnapshot } from 'valtio'
-import { store } from 'store'
+import { store, addTask, Task } from 'store'
 
-type InitialValuesType = {
-  title: string,
-  subtitle: string,
-  author: string,
-  assignee?: string,
-  days?: number,
-  hours?: number,
-  description?: string,
-  id: string,
-  comment?: string,
-  watchers?: string,
-  addInSprint?: boolean
-}
+type InitialValuesType = Omit<Task, 'days' | 'hours'> & { days?: number | string, hours?: number | string }
 
 export default function Admin() {
   const members = useSnapshot(store.members)
@@ -42,8 +30,20 @@ export default function Admin() {
     title: '',
     subtitle: '',
     author: '',
+    assignee: '',
+    days: '',
+    hours: '',
+    stage: 'todo',
+    description: '',
+    comment: '',
+    watchers: '',
     id: generateTaskId(),
-    addInSprint: true
+    inSprint: false
+  }
+
+  const handleSubmit = (values: InitialValuesType, actions: object) => {
+    addTask(values as Task)
+    alert('task created')
   }
 
   const validationSchema = Yup.object({
@@ -82,7 +82,7 @@ export default function Admin() {
     comment: Yup.string()
     .min(40, 'Comment must be more than 40 characters or none'),
     watchers: Yup.string(),
-    addInSprint: Yup.boolean()
+    inSprint: Yup.boolean()
     .test(
       'isSprintActive',
       'There is no active sprint',
@@ -116,9 +116,6 @@ export default function Admin() {
     .required('Required')
   })
 
-  const handleSubmit = (values: InitialValuesType, actions: object) => {
-    alert(JSON.stringify(values, null, 2))
-  }
 
   return (
   <div className='container'>
@@ -190,11 +187,11 @@ export default function Admin() {
           />
           <TextInput 
             label='Add in current Sprint'
-            name='addInSprint'
-            className='switch inline-block ml-3'
+            name='inSprint'
+            className='form-check-input ms-2'
             type='checkbox'
           />
-        <button className='btn btn-primary mt-3 mb-5' type="submit">Submit</button>
+        <button className='btn btn-primary mt-3 mb-5' type="submit">Create task</button>
         </Form>
       </Formik>
   </div>

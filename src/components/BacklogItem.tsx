@@ -1,6 +1,6 @@
 import 'styles/BacklogItem.scss'
 
-import { store } from 'store'
+import { store, changeTaskPoints } from 'store'
 import type { Task } from 'store'
 import { useSnapshot } from 'valtio'
 
@@ -20,7 +20,23 @@ export default function BacklogItem({id}: {id: string }) {
       <div className='backlog-title'>{task.title}</div>
       <Link to={`statistics/${task.assignee}`} className='backlog-assignee'>{task.assignee}</Link>
       <div className='backlog-id'>{task.id}</div>
-      <div className='backlog-points'>{task.points ? task.points : '-'}</div>
+      <input 
+        className='backlog-points' 
+        defaultValue={task.points ? task.points : '-'} 
+        onChange={(e) => {
+          const points = Number(e.currentTarget.value)
+          if (e.currentTarget.value != '' && e.currentTarget.value != '-' && !points) e.currentTarget.value = '-'
+          if (!points) {
+            return
+          }
+          if (points > 40 || points < 1) {
+            e.currentTarget.value = '-'
+            return
+          }
+
+          changeTaskPoints(id, points)
+        }}
+      />
   </div>
   )
 }

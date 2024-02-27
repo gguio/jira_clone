@@ -1,5 +1,7 @@
 import { useField, FormikProps, FieldHookConfig } from 'formik'
 
+import 'styles/FormStyles.scss'
+
 
 type OtherProps = {
   label?: string,

@@ -24,12 +24,13 @@ export type Task = {
   stage: string,
   author: string,
   assignee: string,
-  time: number,
-  desc: string,
+  days: number | null | undefined,
+  hours: number | null | undefined,
+  description: string,
   points?: number,
   comment?: string,
-  watchers?: string[],
-  tillEndOfSprint?: Date
+  watchers?: string,
+  end?: Date
 }
 
 const persistedStore = localStorage.getItem('store')
@@ -48,7 +49,8 @@ export const store = proxy<{
       inSprint: false,
       author: "Me",
       assignee: "Other",
-      time: 8,
+      days: 0,
+      hours: 8,
       desc: "this is need to be done"
     }
   ],
@@ -82,20 +84,9 @@ export const ResetTasks = () => {
       inSprint: true,
       author: "Me",
       assignee: "Other",
-      time: 8,
-      desc: "this is need to be done",
-      points: 10
-    }
-  store.tasks[1] = {
-      id: "AA-0001",
-      title: "Another task",
-      subtitle: "Subtitle",
-      stage: "todo",
-      inSprint: true,
-      author: "Me",
-      assignee: "John",
-      time: 8,
-      desc: "this is need to be done",
+      days: 0,
+      hours: 8,
+      description: "this is need to be done",
       points: 10
     }
   store.members = [
@@ -115,8 +106,27 @@ export const ResetTasks = () => {
   }
 }
 
+export const getTaskIndex = (id: string) => {
+  for (let i=0; i<store.tasks.length; i+=1) {
+    if (store.tasks[i].id === id) return i
+  }
+  return null
+}
+
 export const changeTaskStage = (id: string, stage: string) => {
-  store.tasks.forEach((task) => {
-    if (task.id === id) task.stage = stage
-  })
+  const index = getTaskIndex(id)
+  if (index) store.tasks[index].stage = stage
+}
+
+export const addTask = (newTask: Task) => {
+  if (Array.from(store.tasks, (task)=>task.id).includes(newTask.id)) {
+    throw new Error(`Task with ID ${newTask.id} already exists!`)
+  }
+  store.tasks.push(newTask)
+}
+
+export const changeTaskPoints = (id: string, points: number) => {
+  if (points > 40 || points < 1) return
+  const index = getTaskIndex(id)
+  if (index) store.tasks[index].points = points
 }
