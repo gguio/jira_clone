@@ -52,7 +52,13 @@ export const store = proxy<{
       desc: "this is need to be done"
     }
   ],
-  members: [],
+  members: [
+    {
+      name: 'John',
+      post: 'Developer',
+      department: 'Tech'
+    }
+  ],
   sprint: []
 })
 
@@ -85,7 +91,13 @@ export const ResetTasks = () => {
       desc: "this is need to be done",
       points: 10
     }
-  store.members = []
+  store.members = [
+    {
+      name: 'John',
+      post: 'Developer',
+      department: 'Tech'
+    }
+  ]
   store.sprint = []
 }
 

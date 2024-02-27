@@ -9,22 +9,30 @@ import { generateTaskId } from 'utils/storeUtils.ts'
 import { isMember } from 'utils/validationUtils.ts'
 
 import { TextInput } from 'components/MyTextInput.tsx'
+import { SelectInput } from 'components/SelectInput.tsx'
 
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
+import { useSnapshot } from 'valtio'
+import { store } from 'store'
+
 type InitialValuesType = {
   title: string,
   subtitle: string,
-  author: string
+  author: string,
+  assignee?: string,
+  days?: number,
+  hours?: number
 }
 
 export default function Admin() {
+  const members = useSnapshot(store.members)
 
   const initialValues: InitialValuesType = {
     title: '',
     subtitle: '',
-    author: ''
+    author: '',
   }
 
   const validationSchema = Yup.object({
@@ -35,7 +43,24 @@ export default function Admin() {
     .max(50, 'Subtitle can not be more than 50 characters')
     .required('Required'),
     author: Yup.string()
-    .required('Required')
+    .required('Required'),
+    assignee: Yup.string()
+    .oneOf(
+      Array.from(members, (member)=>member.name),
+      'Must choose assignee'
+    ).
+    required('Required'),
+    days: Yup.number()
+    .min(0, 'Must be more than 0')
+    .integer('Must be integer')
+    .round('floor')
+    .required('Required'),
+    hours: Yup.number()
+    .min(0, 'Must be more than 0')
+    .integer('Must be integer')
+    .max(8, `If task requires more that 8 hours, add 1 to number of days.\nExample: 10h -> 1d 2h`)
+    .round('floor')
+    .required('Required'),
   })
 
   const handleSubmit = (values: InitialValuesType, actions: object) => {
@@ -65,6 +90,31 @@ export default function Admin() {
             placeholder='Author'
             type='text'
           />
+          <SelectInput name='assignee' >
+            <option value="">Select assignee</option>
+            {members.map((member, index) => {
+              return (
+              <option key={index} value={member.name}>{member.name}</option>
+              )
+            })}
+          </SelectInput>
+          <Row className='mt-3'>
+            <label>Time to complete the task</label>
+            <Col style={{maxWidth: '200px'}}>
+              <TextInput
+                name='days'
+                placeholder='Days'
+                type='text'
+              />
+            </Col>
+            <Col style={{maxWidth: '200px'}}>
+              <TextInput
+                name='hours'
+                placeholder='Hours'
+                type='text'
+              />
+            </Col>
+          </Row>
         <button className='btn btn-primary' type="submit">Submit</button>
         </Form>
       </Formik>
