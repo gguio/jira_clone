@@ -6,8 +6,8 @@ type Sprint = {
   name: string,
   goal: string,
   duration: string,
-  begin: Date,
-  end: Date
+  begin: Date | null,
+  end: Date | null
 }
 
 type TeamMember = {
@@ -37,7 +37,7 @@ const persistedStore = localStorage.getItem('store')
 export const store = proxy<{
   tasks: Task[],
   members: TeamMember[],
-  sprint: Sprint[]
+  sprint: Sprint
 }>(persistedStore ? JSON.parse(persistedStore) : {
   tasks: [
     {
@@ -59,7 +59,14 @@ export const store = proxy<{
       department: 'Tech'
     }
   ],
-  sprint: []
+  sprint: {
+    isActive: false,
+    name: '',
+    goal: '',
+    duration: '',
+    begin: null,
+    end: null
+  }
 })
 
 subscribe(store, () => {
@@ -98,7 +105,14 @@ export const ResetTasks = () => {
       department: 'Tech'
     }
   ]
-  store.sprint = []
+  store.sprint = {
+    isActive: false,
+    name: '',
+    goal: '',
+    duration: '',
+    begin: null,
+    end: null
+  }
 }
 
 export const changeTaskStage = (id: string, stage: string) => {
