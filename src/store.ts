@@ -1,12 +1,12 @@
 import { proxy, subscribe } from 'valtio'
 
 
-type Sprint = {
+export type Sprint = {
   isActive: boolean,
   name: string,
   goal: string,
   duration: string,
-  begin: Date | null,
+  start: Date | null,
   end: Date | null
 }
 

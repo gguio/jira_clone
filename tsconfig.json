@@ -17,6 +17,7 @@
     ],
     "jsx": "react-jsx",
     "target": "es5",
+    "downLevelIteration": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,

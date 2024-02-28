@@ -6,10 +6,13 @@ import 'styles/FormStyles.scss'
 type OtherProps = {
   label?: string,
   placeholder?: string,
-  className?: string
+  className?: string,
+  disabled?: boolean,
 }
 
-export const TextInput = ({label, className, placeholder, ...props}: OtherProps & FieldHookConfig<string>) => {
+export const TextInput = (
+  {label, className, placeholder, disabled, ...props}: OtherProps & FieldHookConfig<string>
+) => {
   const [field, meta] = useField(props)
   return (
   <div className='mt-3'>
@@ -17,6 +20,7 @@ export const TextInput = ({label, className, placeholder, ...props}: OtherProps 
 	<label className='form-label' htmlFor={props.id || props.name}>{label}</label>
       ) : null}
       <input 
+	disabled={disabled ? true : false}
 	className={className ? className : "text-input form-control"} 
 	placeholder={placeholder ? placeholder : ''} 
 	{...field} 
