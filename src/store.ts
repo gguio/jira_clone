@@ -10,7 +10,7 @@ export type Sprint = {
   end: Date | null
 }
 
-type TeamMember = {
+export type TeamMember = {
   name: string,
   post: string,
   department: string
@@ -40,25 +40,12 @@ export const store = proxy<{
   members: TeamMember[],
   sprint: Sprint
 }>(persistedStore ? JSON.parse(persistedStore) : {
-  tasks: [
-    {
-      id: "AA-0000",
-      title: "This is a test task",
-      subtitle: "Subtitle",
-      stage: "todo",
-      inSprint: false,
-      author: "Me",
-      assignee: "Other",
-      days: 0,
-      hours: 8,
-      desc: "this is need to be done"
-    }
-  ],
+  tasks: [],
   members: [
     {
-      name: 'John',
-      post: 'Developer',
-      department: 'Tech'
+      name: 'Me',
+      post: 'CEO',
+      department: 'Main'
     }
   ],
   sprint: {
@@ -76,24 +63,12 @@ subscribe(store, () => {
 })
 
 export const ResetTasks = () => {
-  store.tasks[0] = {
-      id: "AA-0000",
-      title: "This is a test task",
-      subtitle: "Subtitle",
-      stage: "todo",
-      inSprint: true,
-      author: "Me",
-      assignee: "Other",
-      days: 0,
-      hours: 8,
-      description: "this is need to be done",
-      points: 10
-    }
+  store.tasks = []
   store.members = [
     {
-      name: 'John',
-      post: 'Developer',
-      department: 'Tech'
+      name: 'Me',
+      post: 'CEO',
+      department: 'Main'
     }
   ]
   store.sprint = {
@@ -115,7 +90,7 @@ export const getTaskIndex = (id: string) => {
 
 export const changeTaskStage = (id: string, stage: string) => {
   const index = getTaskIndex(id)
-  if (index) store.tasks[index].stage = stage
+  if (index !== null) store.tasks[index].stage = stage
 }
 
 export const addTask = (newTask: Task) => {
@@ -125,8 +100,30 @@ export const addTask = (newTask: Task) => {
   store.tasks.push(newTask)
 }
 
+export const addMember = (newMember: TeamMember) => {
+  if (Array.from(store.members, (task)=>task.name).includes(newMember.name)) {
+    throw new Error(`Member with name ${newMember.name} already exists!`)
+  }
+  store.members.push(newMember)
+}
+
 export const changeTaskPoints = (id: string, points: number) => {
   if (points > 40 || points < 1) return
   const index = getTaskIndex(id)
   if (index) store.tasks[index].points = points
+}
+
+export const startSprint = (data: Sprint) => {
+  store.sprint.name = data.name
+  store.sprint.goal = data.goal
+  store.sprint.duration = data.duration
+  store.sprint.isActive = data.isActive
+  store.sprint.start = data.start
+  store.sprint.end = data.end
+}
+
+export const toggleTaskInSprint = (id: string, newState: boolean) => {
+  const index = getTaskIndex(id)
+  if (!store.sprint.isActive) return 
+  store.tasks[index].inSprint = newState ? newState : !store.tasks[index].inSprint
 }

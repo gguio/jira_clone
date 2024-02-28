@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 
 import {useState } from 'react'
 
-import { store, Sprint } from 'store'
+import { store, Sprint, startSprint } from 'store'
 import { useSnapshot } from 'valtio'
 
 import { getDateByDuration, formatDateForInputDate } from 'utils/datesOperations.ts'
@@ -33,7 +33,8 @@ export const StartSprintModal = ({setIsModalVisible}: {setIsModalVisible: any}) 
   }
 
   const handleSubmit = (values: Sprint) => {
-    alert(JSON.stringify(values))
+    startSprint(values)
+    setIsModalVisible(false)
   }
 
   const validationSchema = Yup.object({
@@ -43,27 +44,6 @@ export const StartSprintModal = ({setIsModalVisible}: {setIsModalVisible: any}) 
     goal: Yup.string()
     .max(60, 'Goal shold be less that 60 characters')
     .required('Required'),
-    duration: Yup.string()
-    .test(
-      'disableEnd',
-      'You have to specify start',
-      (value, ctx) => {
-        if (!ctx.from) return false
-        if (value == 'null') {
-          setIsEndDisabled(prev => false)
-          setEndDate(prev => null)
-          return true
-        }
-        if (!startDate) {
-          return false
-        } else {
-          const end = getDateByDuration(Number(value)*7, startDate)
-          setEndDate(prev => end)
-          setIsEndDisabled(prev => true)
-          return true
-        } 
-      }
-    ),
     start: Yup.date()
     .required('Required'),
     end: Yup.date()
@@ -132,14 +112,6 @@ export const StartSprintModal = ({setIsModalVisible}: {setIsModalVisible: any}) 
             rows={2}
             placeholder='New sprint'
           />
-            <SelectInput name='duration'>
-              <option value='null'>Duration</option>
-              {[...Array(4).keys()].map(i => `${i+1} weeks`).map((text, index) => {
-                return(
-                  <option key={index} value={index+1}>{text}</option>
-                )
-              })}
-            </SelectInput>
           <TextInput 
             label='Start Date'
             name='start'
@@ -156,7 +128,7 @@ export const StartSprintModal = ({setIsModalVisible}: {setIsModalVisible: any}) 
             disabled={isEndDisabled}
           />
         <button className='btn btn-primary mt-3 mb-5' type="submit">Start new Sprint</button>
-        <button className='btn btn-primary mt-3 mb-5' onClick={()=>{setIsModalVisible(false)}}>Discard</button>
+        <button className='btn btn-danger ms-3 mt-3 mb-5' onClick={()=>{setIsModalVisible(false)}}>Discard</button>
         </Form>
       </Formik>
       </div>

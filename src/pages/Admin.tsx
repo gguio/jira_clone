@@ -12,6 +12,7 @@ import { TextInput } from 'components/MyTextInput.tsx'
 import { SelectInput } from 'components/SelectInput.tsx'
 import { TextareaInput } from 'components/TextareaInput.tsx'
 import { StartSprintModal } from 'components/StartSprintModal.tsx'
+import { AddMemberModal } from 'components/AddMemberModal.tsx'
 
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
@@ -24,6 +25,7 @@ type InitialValuesType = Omit<Task, 'days' | 'hours'> & { days?: number | string
 
 export default function Admin() {
   const [showStartSprintModal, setShowStartSprintModal] = useState(false)
+  const [showAddMemberModal, setShowAddMemberModal] = useState(false)
 
   const members = useSnapshot(store.members)
   const tasks = useSnapshot(store.tasks)
@@ -122,12 +124,19 @@ export default function Admin() {
 
   return (
   <div className='container'>
-      <button onClick={()=>{
+      <button className='btn btn-primary mt-3' onClick={()=>{
         setShowStartSprintModal(true)
         console.log('modal opened')
       }}>Start Sprint</button>
+      <button className='btn btn-primary mt-3 ms-3' onClick={()=>{
+        setShowAddMemberModal(true)
+        console.log('modal opened')
+      }}>Add new member</button>
       {showStartSprintModal ? (
       <StartSprintModal setIsModalVisible={(show)=>{setShowStartSprintModal(show)}}  />
+      ) : null}
+      {showAddMemberModal ? (
+      <AddMemberModal setIsModalVisible={(show)=>{setShowAddMemberModal(show)}}  />
       ) : null}
       <Formik 
         initialValues={initialValues}
