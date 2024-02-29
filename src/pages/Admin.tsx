@@ -1,8 +1,7 @@
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { generateTaskId } from 'utils/storeUtils.ts'
 import { isMember } from 'utils/validationUtils.ts'
@@ -112,7 +111,6 @@ export default function Admin() {
       (value, ctx) => {
         if (!ctx.from) return false
         if (value && sprint.isActive && ctx.from[0].value.days && sprint.end) {
-          const today = new Date()
           const end = getDateByDuration(ctx.from[0].value.days)
           if (end > sprint.end) return false
         } else return true
@@ -133,10 +131,10 @@ export default function Admin() {
         console.log('modal opened')
       }}>Add new member</button>
       {showStartSprintModal ? (
-      <StartSprintModal setIsModalVisible={(show)=>{setShowStartSprintModal(show)}}  />
+      <StartSprintModal setIsModalVisible={(show: boolean)=>{setShowStartSprintModal(show)}}  />
       ) : null}
       {showAddMemberModal ? (
-      <AddMemberModal setIsModalVisible={(show)=>{setShowAddMemberModal(show)}}  />
+      <AddMemberModal setIsModalVisible={(show: boolean)=>{setShowAddMemberModal(show)}}  />
       ) : null}
       <Formik 
         initialValues={initialValues}

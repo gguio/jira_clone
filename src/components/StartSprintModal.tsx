@@ -1,17 +1,12 @@
 import { TextInput } from 'components/MyTextInput.tsx'
 import { TextareaInput } from 'components/TextareaInput.tsx'
-import { SelectInput } from 'components/SelectInput.tsx'
 
 import { Formik, Form } from 'formik'
 
-import Button from 'react-bootstrap/Button';
 
 import {useState } from 'react'
 
-import { store, Sprint, startSprint } from 'store'
-import { useSnapshot } from 'valtio'
-
-import { getDateByDuration, formatDateForInputDate } from 'utils/datesOperations.ts'
+import { Sprint, startSprint } from 'store'
 
 import * as Yup from 'yup'
 
@@ -116,8 +111,8 @@ export const StartSprintModal = ({setIsModalVisible}: {setIsModalVisible: any}) 
             label='Start Date'
             name='start'
             type='date'
-            onChange={(e) => {
-                setStartDate(e.currentTarget.value)
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setStartDate(new Date(e.currentTarget.value))
               }}
           />
           <TextInput 

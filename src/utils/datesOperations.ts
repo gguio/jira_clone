@@ -1,7 +1,7 @@
 import { store } from 'store'
 
 
-export const getDateByDuration = (days: number, fromDate: Date) => {
+export const getDateByDuration = (days: number, fromDate?: Date) => {
   const today = fromDate ? new Date(fromDate) : new Date()
   return new Date(today.setDate(today.getDate() + days))
 }

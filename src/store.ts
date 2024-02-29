@@ -53,7 +53,7 @@ export const store = proxy<{
     name: '',
     goal: '',
     duration: '',
-    begin: null,
+    start: null,
     end: null
   }
 })
@@ -76,7 +76,7 @@ export const ResetTasks = () => {
     name: '',
     goal: '',
     duration: '',
-    begin: null,
+    start: null,
     end: null
   }
 }
@@ -122,8 +122,8 @@ export const startSprint = (data: Sprint) => {
   store.sprint.end = data.end
 }
 
-export const toggleTaskInSprint = (id: string, newState: boolean) => {
+export const toggleTaskInSprint = (id: string, newState?: boolean) => {
   const index = getTaskIndex(id)
-  if (!store.sprint.isActive) return 
+  if (!store.sprint.isActive || index === null) return 
   store.tasks[index].inSprint = newState ? newState : !store.tasks[index].inSprint
 }

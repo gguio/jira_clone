@@ -1,4 +1,4 @@
-import { useField, FormikProps, FieldHookConfig } from 'formik'
+import { useField, FieldHookConfig } from 'formik'
 
 import 'styles/FormStyles.scss'
 

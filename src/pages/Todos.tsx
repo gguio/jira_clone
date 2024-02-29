@@ -1,6 +1,5 @@
 import { store } from 'store'
 import { useSnapshot } from 'valtio'
-import { useEffect } from 'react'
 
 export default function Todos() {
 	const { tasks } = useSnapshot(store)
